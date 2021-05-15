@@ -1,0 +1,157 @@
+{% extends 'discuss/template.html' %}
+{% load static %}
+
+{% block content %}
+        
+    <div class="main-feed">
+        <!-- {% if request.user.is_authenticated%}
+            <div class="alert alert-success" style='position: static;'> 
+                Hello, {{request.user.username}}!
+            </div> 
+        {% endif %} -->
+
+        {% if request.user.is_authenticated == False %}
+                <div class="alert alert-warning" role="alert" style='position: static;'> 
+                    <strong>Hello, stranger!</strong> You should <a class='alert-link' href='{% url 'registration' %}'>create a new account</a> or <a class='alert-link' href='{% url 'login' %}'>log in</a> before using this website.
+                </div>
+        {% endif %}
+
+        <div class="detail" style=" text-align: center; font-size: 40px;">
+           <b>Recent discussions</b><br>
+        </div>
+         
+        {% if discussion%}
+    
+        
+                
+                
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Search</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <form method="get">
+                        <div class="modal-body">
+                            <div style="text-align:left;">
+                                <p>
+                                    <label>Discussion title:</label><br>
+                                    {{myFilter.form.title}}
+                                </p>
+                                <p>
+                                    <label>Topic:</label><br>
+                                    {{myFilter.form.discussion_topic}}
+                                </p>
+                            
+                            </div>
+                            
+                           
+    
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+             
+            {% for el in discussion%}
+                        <div class="post">
+                            <div class="post-header">
+                                <h4 class="create-post-title">
+                                    <a href={% url 'detail' el.id %}><h1>{{el.title}}</h1></a>   {% if el.updated %}<h3><span class="badge bg-secondary">updated</span></h3>{% endif %}
+                                </h4>
+                            </div>
+                            <div class="post-body">
+                                <div class="post-text">
+                                    {{el.content|truncatechars:'255'}}
+                                </div>
+         
+                            </div>
+                            <div >
+                                <img src='{%if el.discussion_picture%} {{el.discussion_picture.url}} {% else %}{% static 'discuss/images/placeholder.png' %}{% endif %}'alt="" style="max-width: 985px; max-height: 500px; margin: 5px; border-radius: 50px;">
+                            </div> 
+                            <div class="create-post-footer">
+                                <div>
+                                    <a style='margin-right: 5px'>Author:</a><br>
+                                    <a href='{% url 'profile' el.author.id %}' > {{el.author}}</a><br>
+                                    
+                                </div>
+                                <div>
+                                    <a style='margin-right: 5px'>Topic:</a><br>
+                                    <a href='{% url 'topic' el.discussion_topic.id %}' > {{el.discussion_topic}}</a><br>
+                                </div>
+                                
+                                <div>
+                                    {% if el.updated %}
+                                    <a style='margin-right: 5px'>Update date:</a><br>
+                                    {% else %}
+                                    <a style='margin-right: 5px'>Creation date:</a><br>
+                                    {% endif%}
+                                    <b >{{el.creation_time|date:"d.m.Y"}}</b>
+                                </div>
+                            </div> 
+                        </div>
+            {% endfor %}
+
+            <nav aria-label="Page navigation example" >
+                <ul class="pagination justify-content-center" >
+                    {% if discussion.has_previous %}
+                        <li class="page-item"><a class="page-link" href='{% url 'index' %}?page={{discussion.previous_page_number}}'><</a>
+                    {% endif %}
+                                
+                    {% if pages %}
+                            {% for page in pages%}
+                            
+                                <li class="page-item"><a class="page-link" href='{% url 'index' %}?page={{page}}'>{{page}}</a></li>
+                            {% endfor %}
+                    {% endif %}
+
+                    {% if discussion.has_next %}
+                        <li class="page-item"><a class="page-link" href='{% url 'index' %}?page={{discussion.next_page_number}}'>></a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <div class="mt-4 alert alert-warning" role="alert" style='position: static;'>
+                <b>Sorry, we don`t have any discussions :(</b><br>
+                <br>        
+                <a class='alert-link' href='{% url 'create' %}'>You can create one!</a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+<!-- <p><b><a href='{% url 'create' %}'>Create a discussion</a></b></p>
+    <h2>Discussions:</h2>
+    {% if discussion%}
+            {% for el in discussion%}
+            <ul>
+                <li><a href={% url 'detail' el.id %}>{{el.title}}</a>  ({{el.creation_time}})
+                {% if el.updated %}
+                    <b>(updated)</b>
+                {% endif %}
+                </li>
+            </ul>
+            {% endfor %}
+    {% else %}
+        <p>No data!</p>
+        <a href='{% url 'create' %}'>You can create one!</p>
+    {% endif %}
+
+        {% if discussion.has_previous %}
+            <a href='{% url 'index' %}?page={{discussion.previous_page_number}}'>Previous </a>
+        {% endif %}
+
+        {{discussion.number}} of {{discussion.paginator.num_pages}}
+
+        {% if discussion.has_next %}
+            <a href='{% url 'index' %}?page={{discussion.next_page_number}}'> Next</a>
+        {% endif %} -->

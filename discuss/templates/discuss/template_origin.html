@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vergum</title>
+</head>
+<body>
+    <h1><a href={% url 'index' %}>Vergum</a></h1>
+    {% if request.user.is_authenticated %}
+        <b>You`re logged as {{request.user}}</b><br>
+        <b>(User id: {{request.user.id}})</b><br>
+        <b>(<a href='{% url 'logout' %}'>Log out</a>)</b><br>
+    {% else %}
+        <b>Hello, stranger!</b><br>
+        <b>You can <a href='{% url 'login' %}'>log in</a></b><br>
+        <b>Or <a href='{% url 'registration' %}'>create a new account!</a></b><br>
+    {% endif %}
+    {% block content %} 
+    {% endblock %}
+</body>
+</html>

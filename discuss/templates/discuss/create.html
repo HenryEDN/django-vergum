@@ -1,0 +1,41 @@
+{% extends 'discuss/template.html' %}
+
+{% block content %}
+    <div class='container'>
+        <div class="main-feed">
+            <div class="post">
+                <div class="post-header">
+                    <div class="create-post-body" style='margin: 0 auto;'>
+                        <form method='POST' style=' text-align: left;' enctype="multipart/form-data">
+                            <h1>Create discussion</h1>
+                            <hr>
+                            {% csrf_token %}
+                            {{ form.title }}<br>
+                            Topic: {{ form.discussion_topic}}<br>
+                            <br>
+                            {{ form.content}}<br>
+
+                            {{ form.discussion_picture}}
+                                <div class="text-center">
+                                {% if request.user.is_authenticated %}
+                                <button type='submit', class="btn btn-success">Post</button>
+                                {% else %}
+                                    
+                                    <a class='btn btn-success disabled'>Log in to Create discussion</a>
+                                    
+                                {% endif %}
+                                <a href={% url 'index'%} class="btn btn-danger" style='color: white; margin-right: 5px;'>Cancel</a>
+                            </div>
+                            <span>{{ error }}<span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock  %}
+
+
+
+
+
+

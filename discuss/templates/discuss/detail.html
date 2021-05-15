@@ -1,0 +1,48 @@
+{% extends 'discuss/template.html' %}
+{% load static %}
+
+{% block content %}
+    <div class='detail'>
+        <div class='detail-header'>
+            <h1>{{discussion.title}}</h1>
+            <h4>Author: <a href='{% url 'profile' discussion.author.id %}' >{{discussion.author}}</a></h4>
+            <p>Topic: <a href='{% url 'topic' discussion.discussion_topic.id %}' >{{discussion.discussion_topic}}</a></p>
+
+        </div>
+            <img src='{%if discussion.discussion_picture%} {{discussion.discussion_picture.url}} {% else %}{% static 'discuss/images/placeholder.png' %}{% endif %}'alt="" style="max-width: 985px; max-height: 500px; margin: 5px; margin-bottom: 20px; margin-top: 20px; border-radius: 50px; display:block; margin: 10px auto 20px;">
+        <div class='detail-content'>
+            <p>{{discussion.content}}</p>
+
+        </div>
+        <div class='detail-footer'>
+            <b>Publish date: {{discussion.creation_time}}</b><br>
+            <br>
+            {% if request.user.id == discussion.author.id %}
+                <a type="button" class="btn btn-outline-warning" href={% url 'update' discussion.id %} >Edit</a>
+                <a type="button" class="btn btn-outline-danger" href={% url 'delete' discussion.id %} >Delete</a>
+            {% endif %}
+        </div>
+        <hr style="margin-left: 10px; margin-right: 10px;">
+            {% if comments %}
+                {% for comment in comments %}
+                <div class="alert alert-primary" role="alert" style='position: static;'>
+                    Author: <b><a href='{% url 'profile' comment.author.id %}' >{{comment.author}}</a></b><br>
+                    <hr>
+                    {{comment.text}}<br>
+                    <b>Date: {{comment.creation_time}}</b><br>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+        <div class='detail-comments'>
+            {% if request.user.is_authenticated %}
+                <form method='POST'>
+                    {% csrf_token %}
+                    {{ form.text }}<br>
+                    <button type='submit' class="btn btn-primary">Comment</button>
+                    
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

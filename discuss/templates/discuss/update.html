@@ -1,0 +1,33 @@
+{% extends 'discuss/template.html' %}
+{% load static%}
+{% block content %}
+    <div class='container'>
+        <div class="main-feed">
+            <div class="post">
+                <div class="post-header">
+                    <div class="create-post-body" style='margin: 0 auto;'>
+                        <form method='POST'  enctype="multipart/form-data">
+                            <h1>Edit: {{discussion.title}}</h1>
+                            <hr>
+                            <img src='{%if discussion.discussion_picture%} {{discussion.discussion_picture.url}} {% else %}{% static 'discuss/images/placeholder.png' %}{% endif %}'alt="" style="max-width: 600px; max-height: 400px; margin: 5px; margin-bottom: 20px; margin-top: 20px; border-radius: 50px; display:block; margin: 10px auto 20px; border: 5px #1890ff solid;">
+                            {% csrf_token %}
+                            {{ form.title }}<br>
+                            Topic: {{ form.discussion_topic}}<br>
+                            <br>
+                            {{ form.content}}<br>
+
+                            {{ form.discussion_picture}}<br>
+                            <br>
+
+                            <div class="text-center">
+                                <button type='submit' class="btn btn-success">Edit</button>
+                                <a href={% url 'detail' discussion.id%} class="btn btn-danger" style='color: white; margin-right: 5px;'>Cancel</a>
+                                <span>{{ error }}<span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
