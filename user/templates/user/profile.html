@@ -1,0 +1,67 @@
+{% extends 'discuss/template.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+    <div class='detail'>
+        <div class='detail-header' style="height: 300px">
+            <div class="profile-image" >
+                <img src='{%if user_info.profile_picture%} {{user_info.profile_picture.url}} {% else %}{% static 'user/images/no_profile_picture.png' %}{% endif %}' class="card-img-top" alt="..." style="max-width: 250px; max-height: 250px; float: left; border: 10px #1890ff solid; border-radius: 100%; margin: 5px; background-color: white">
+                
+            </div>
+            <h1>{{user_info.user}} {% if user_info.user.id == request.user.id%} <b>(You)</b> {%endif%}</h1>
+            <h3>(user id: {{user_info.user.id}})</h2><br>
+            <p>{{user_info.about_user}}</p>
+            
+
+        </div>
+    </div>   
+        
+    {% if request.user.id == user_info.user.id %}
+    <div class="detail" style=" text-align: center;">
+        <a type="button" class="btn btn-outline-warning mr-4" href={% url 'editProfileUser' user_info.user.id %} >Edit profile</a>
+        <a type="button" class="btn btn-outline-danger" href='#'  >Delete account</a>
+    </div>
+    {% endif %}  
+
+    <div class="detail" style="margin-bottom: 10px;"> 
+        {% if user_info.user.id == request.user.id%} 
+            <h2 style="text-align: center;">Your discussions {% if discussions.count%}({{discussions.count}}){%endif%}</h2>
+        {% else %}
+            <h2 style="text-align: center;">{{user_info.user}}`s discussions {% if discussions.count%}({{discussions.count}}){%endif%}</h2>
+        {%endif%}   
+        <hr style="margin-left: 10px; margin-right: 10px;">
+        {% if discussions %}
+            {% for i in discussions%}
+                <div class="card mb-4" style='position: static;'>
+                    <div class="card-body" >
+                        <h5 class="card-title" >
+                        <a href={% url 'detail' i.id %} style="text-decoration: none;"><h1>{{i.title}}</h1></a> {% if i.updated %}<h3><span class="badge bg-secondary" style="color: white">updated</span></h3>{% endif %}
+                        </h5>
+                        <hr>
+                        <p class="card-text">{{i.content|truncatechars:'255'}}</p>
+                        <p class="card-text"><small class="text-muted">{{i.creation_time}}</b></small></p>
+                    </div>
+                        <img  src='{%if i.discussion_picture%} {{i.discussion_picture.url}} {% else %}{% static 'discuss/images/placeholder.png' %}{% endif %}' alt=""  style="max-width: 985px; max-height: 500px; border-radius: 50px; display:block; margin: 10px auto 20px;"> 
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-warning text-center" role="alert">
+                {% if user_info.user.id == request.user.id%} 
+                    You don`t have any discussions, you can <a class='alert-link' href='{% url 'create' %}'>create</a> one 
+                {% else %}
+                    {{user_info.user}} doesn`t have any discussions
+                {%endif%}
+            </div> 
+        {% endif %}
+    </div>
+    
+
+{% endblock %}
+
+
+
+

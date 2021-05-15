@@ -1,0 +1,42 @@
+{% extends 'discuss/template.html' %}
+{% load static%}
+
+{% block content %}
+    <div class='container'>
+        <div class="main-feed">
+            <div class="post">
+                <div class="post-header">
+                    <div class="create-post-body" style='margin: 0 auto;'>
+                        <form method='POST' enctype="multipart/form-data">
+                            <h1>Edit profile: {{user_info.user}}</h1>
+                            <hr>
+                                <img src='{%if user_info.profile_picture%} {{user_info.profile_picture.url}} {% else %}{% static 'user/images/no_profile_picture.png' %}{% endif %}' class="card-img-top" alt="..." style="max-width: 250px; max-height: 250px; border: 10px #1890ff solid; border-radius: 100%; background-color: white; margin: 10px auto 20px;">
+                           
+                    
+                            {% csrf_token %}
+                            <div class="text-center">
+                                    {{ form.nickname }}<br>
+
+                                    <br>
+
+                                    {{ form.about_user}}<br>
+
+                                    <br>
+                        
+                                    {{ form.profile_picture}} <br>
+
+                                    <br>
+
+                                    <button type='submit', class="btn btn-success">Edit</button>
+
+                                    <a href={% url 'profile' user_info.user.id%} class="btn btn-danger" style='color: white; margin-right: 5px;'>Cancel</a>
+
+                                    <span>{{ error }}<span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

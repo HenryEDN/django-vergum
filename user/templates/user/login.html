@@ -1,0 +1,51 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="shortcut icon" href={% static 'discuss/images/logo.png' %} type="image/png">
+    <link rel="stylesheet" href={% static 'user/css/login.css' %}>
+ 
+
+
+</head>
+
+<body>
+<div class="form-wrap">
+    <div class="profile"><img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
+        <h1>Log in</h1>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {% for message in messages %}
+            <div class="m-1 alert alert-warning" >
+                <strong style="font-size: 12; text-align: center;">{{message}}</strong>
+            </div>
+        {% endfor %}
+        
+        <div>
+            <label for="login">Login</label>
+            <input type="text" name="username" class="form-control">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" >
+        </div>
+        
+        <div>
+            <button class="registr" type="submit">Enter</button>
+        </div>
+        
+        <div>
+            <a class="newaccount" href="{% url 'registration' %}">Create an account</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

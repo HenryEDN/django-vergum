@@ -1,0 +1,78 @@
+{% load static %}
+
+
+<!-- {% block content %}
+    <div class='container'>
+        <h1>Create an account</h1>
+        <form method='POST'>
+            {% csrf_token %}
+            {{ form.username }}<br>
+            {{ form.email }}<br>
+            {{ form.password }}<br>
+            <button type='SUBMIT'>Create</button>
+
+            <a href={% url 'index'%}>Cancel</a>
+        </form>
+    </div>
+{% endblock  %}  -->
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="shortcut icon" href={% static 'discuss/images/logo.png' %} type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="stylesheet" href={% static 'user/css/reg.css' %}>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="form-wrap">
+        <div class="profile"><img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
+            <h1>Authentication</h1>
+        </div>
+        <form method="POST" >
+            {% csrf_token %}
+            <div>
+                <label>Login</label>
+                {{ form.username }}<br>
+            </div>
+            <div>
+                <label>E-mail</label>
+                {{ form.email }}<br>
+            </div>
+            <div>
+                <label>Password</label>
+                {{ form.password1 }}<br>
+            </div>
+            <div>
+                <label>Repeat password</label>
+                {{ form.password2 }}
+            </div>
+            
+            <div>
+                <button class="registr" type="submit">Register</button>
+            </div>
+            <div>
+                <a class="newaccount" href="{% url 'login' %}" style="text-align: center;">Already have an account?</a>    
+            </div>
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %} 
+                    <div class="m-1 alert alert-danger" >
+                            <strong style="font-size: 12;">{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %} 
+        </form>
+    </div>
+
+</body>
+
+</html>
